@@ -34,6 +34,14 @@ const router  = new VueRouter({
                 title: '首页'
             }
         },
+        {
+            path: "/draggableIndex",
+            name: 'draggableIndex',
+		    component: () => import('../views/draggableIndex.vue'),
+            meta:{
+                title: '拖拽页面'
+            }
+        },
     ]
 })
 
