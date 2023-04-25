@@ -49,7 +49,7 @@
                                     <i class="el-icon-s-operation can-click move1"></i>
                                 </a>
                                 <a>
-                                    <i class="el-icon-delete can-click" @click="deleteRecord(item.id,index,'top')"></i>
+                                    <i class="el-icon-delete can-click" @click="deleteRecord(item,index,'top')"></i>
                                 </a>
                             </div>
                         </li>
@@ -73,7 +73,7 @@
                                 <i class="el-icon-s-operation can-click move2"></i>
                             </a>
                             <a>
-                                <i class="el-icon-delete can-click" @click="deleteRecord(item.id,index,'bottom')"></i>
+                                <i class="el-icon-delete can-click" @click="deleteRecord(item,index,'bottom')"></i>
                             </a>
                         </div>
                     </li>
@@ -349,9 +349,12 @@ import Sortable from 'sortablejs';
                 })
             },
             // 删除
-            deleteRecord(id,index,string){
+            deleteRecord(item,index,string){
                 if(string == 'bottom'){
                     index = index + this.showNumber
+                }
+                if(item.isTop){
+                    this.topCount--
                 }
                 this.showData.splice(index,1)
                 this.updateSort()
@@ -360,7 +363,7 @@ import Sortable from 'sortablejs';
                 // 匹配左侧操作
                 var leftIndex = null
                 for(var i = 0;i < this.realData.length;i++){
-                    if(this.realData[i].id == id){
+                    if(this.realData[i].id == item.id){
                         leftIndex = i
                         break
                     }
@@ -399,11 +402,11 @@ import Sortable from 'sortablejs';
                     
                     var newIndex = e.newIndex
                     this.showData.forEach((item,index) => {
-                        if(index > newIndex && item.isTop){
+                        if(index >= newIndex && item.isTop){
                             newIndex++
                         }
                     })
-                    this.showData.splice(newIndex+1, 0, addShowDataObj)
+                    this.showData.splice(newIndex, 0, addShowDataObj)
                     this.updateSort()
                     this.getShowTwoData()
 
@@ -431,11 +434,11 @@ import Sortable from 'sortablejs';
 
                     var newIndex = e.newIndex
                     this.showData.forEach((item,index) => {
-                        if(index > newIndex && item.isTop){
+                        if(index >= newIndex && item.isTop){
                             newIndex++
                         }
                     })
-                    this.showData.splice(newIndex+1+this.showNumber, 0, addShowDataObj)
+                    this.showData.splice(newIndex+this.showNumber, 0, addShowDataObj)
                     this.updateSort()
                     this.getShowTwoData()
 
