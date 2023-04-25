@@ -54,7 +54,7 @@
                             </div>
                         </li>
                     </draggable>
-                    <li>
+                    <li v-if="showBottomData.length > 0">
                         <div style="text-align: center;display: flex;align-items: center;justify-content: space-between;margin-bottom: 10px;">
                             <div style="width: 33%;height: 1px;border-bottom: 1px dashed rgb(0 0 0 / 46%);"></div>
                             <span style="font-size: 12px;color: rgb(0 0 0 / 46%);width: 33%;text-align: center;">超出设置展示数量 ，以下内容无效</span>
