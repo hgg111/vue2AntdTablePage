@@ -231,6 +231,8 @@ import Sortable from 'sortablejs';
                 leftChoseItem: {},
                 addWordVisiable: false,
                 addWord: '',
+                topCount: 0,
+                maxTopNumber: 3
             }
         },
         mounted(){
@@ -300,11 +302,19 @@ import Sortable from 'sortablejs';
                         item.isDrag = false
                     }
                 })
+                // 刷新左侧表格数据
+                var arr = this.realData.slice(0)
+                this.realData = []
+                this.$nextTick(function () {
+                    this.realData = arr
+                });
+                this.topCount = 0
                 this.updateSort()
                 this.getShowTwoData()
             },
             // 取消置顶
             cancleTop(item,index,str){
+                this.topCount--
                 if(str == 'bottom'){
                     index = index + this.showNumber
                 }
@@ -333,14 +343,20 @@ import Sortable from 'sortablejs';
             },
             // 置顶
             toTop(index,item,str){
-                if(str == 'bottom'){
+                if(this.topCount < this.maxTopNumber){
+                   if(str == 'bottom'){
                     index = index + this.showNumber
+                    }
+                    this.showData[index].isTop = true
+                    this.showData.splice(index,1)
+                    this.showData.splice(0,0,item)
+                    // 置顶计数加一
+                    this.topCount++
+                    this.updateSort()
+                    this.getShowTwoData() 
+                }else{
+                    this.$message.error('已达到最大置顶数')
                 }
-                this.showData[index].isTop = true
-                this.showData.splice(index,1)
-                this.showData.splice(0,0,item)
-                this.updateSort()
-                this.getShowTwoData()
             },
             // 更新sort
             updateSort(){
